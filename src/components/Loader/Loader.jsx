@@ -1,3 +1,5 @@
+import css from './Loader.module.css'
+
 export const Loader = () => {
-  return <p>Загрузка...</p>;
+  return <p className={css.Loader}>...</p>;
 };

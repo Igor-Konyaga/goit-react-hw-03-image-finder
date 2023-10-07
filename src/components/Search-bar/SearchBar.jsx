@@ -7,7 +7,7 @@ export class SearchBar extends Component {
     return (
       <header className={css.Searchbar}>
         <form action="#" className={css.SearchForm}>
-          <button type="button" className={css.SearchFormButton}></button>
+          <button type="submit" className={css.SearchFormButton}></button>
           <input
             type="text"
             className={css.SearchFormInput}
