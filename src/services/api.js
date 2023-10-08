@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Axios from 'axios';
+
 
 export const fetchImg = async (searchQuery) => {
   const {data} = await axios(

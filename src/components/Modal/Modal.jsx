@@ -1,4 +1,3 @@
-import { ImageGalleryItem } from 'components/Image-gallery-item/ImageGalleryItem';
 import css from './Modal.module.css';
 
 export const Modal = () => {
