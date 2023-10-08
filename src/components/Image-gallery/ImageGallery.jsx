@@ -4,10 +4,15 @@ import { ImageGalleryItem } from 'components/Image-gallery-item/ImageGalleryItem
 
 export class ImageGallery extends Component {
   render() {
+    const validArr =
+      Array.isArray(this.props.images) && this.props.images.length;
     return (
-      <section className={css.ImageGallery}>
-        <ImageGalleryItem />
-      </section>
+      <ul className={css.ImageGallery}>
+        {validArr &&
+          this.props.images.map(img => {
+            return <ImageGalleryItem key={img.id} url={img.webformatURL} />;
+          })}
+      </ul>
     );
   }
 }

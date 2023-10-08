@@ -5,7 +5,7 @@ export const Modal = () => {
   return (
     <div className={css.Overlay}>
       <div className={css.Modal}>
-        <ImageGalleryItem />
+        <img src="" alt="" />
       </div>
     </div>
   );
