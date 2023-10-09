@@ -19,12 +19,11 @@ export class App extends Component {
   };
 
   onSubmitForm = ({ searchValue }) => {
-    this.setState({ search: searchValue });
+    this.setState({ search: searchValue, isLoading: true, loadMore: false });
   };
 
   fetchSearchImg = async () => {
     try {
-      this.setState({ isLoading: true, loadMore: false, images: null });
       const { hits } = await fetchImg(this.state.search, this.state.page);
       this.setState(prevState => {
         return {
@@ -44,6 +43,9 @@ export class App extends Component {
       prevState.page !== this.state.page
     ) {
       this.fetchSearchImg();
+    }
+    if (prevState.search !== this.state.search) {
+      this.setState({ images: null });
     }
   }
 
