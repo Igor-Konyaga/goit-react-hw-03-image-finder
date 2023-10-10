@@ -18,6 +18,7 @@ export class ImageGallery extends Component {
                 img={img.webformatURL}
                 bigImg={img.largeImageURL}
                 onClickImg={this.props.onClickImg}
+					 
               />
             );
           })}

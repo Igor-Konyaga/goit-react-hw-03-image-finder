@@ -67,7 +67,7 @@ export class App extends Component {
       Notiflix.Notify.warning('Enter a search query!');
       return;
     } else if (searchValue === this.state.search) {
-		Notiflix.Notify.info('This search query is already displayed!');
+      Notiflix.Notify.info('This search query is already displayed!');
       return;
     }
     this.setState({
@@ -89,6 +89,10 @@ export class App extends Component {
     this.setState({ modal: true, urlBigImg: e.currentTarget.href });
   };
 
+  onCloseBtb = e => {
+    this.setState({ modal: false });
+  };
+
   render() {
     return (
       <div className={css.App}>
@@ -97,9 +101,15 @@ export class App extends Component {
         <ImageGallery
           images={this.state.images}
           onClickImg={this.handleClickImg}
+          onCloseBtb={this.onCloseBtb}
         />
         {this.state.loadMore && <Button handleClick={this.handleClick} />}
-        {this.state.modal && <Modal urlImg={this.state.urlBigImg} />}
+        {this.state.modal && (
+          <Modal
+            urlImg={this.state.urlBigImg}
+            onCloseBtb={this.onCloseBtb}
+          />
+        )}
         {this.state.error && Notiflix.Notify.failure(this.state.error)}
       </div>
     );
