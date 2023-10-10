@@ -5,12 +5,14 @@ export class ImageGalleryItem extends Component {
   render() {
     return (
       <li className={css.ImageGalleryItem}>
-        <img
-          className={css.ImageGalleryItemImage}
-          loading="lazy"
-          src={this.props.url}
-          alt=""
-        />
+        <a href={this.props.bigImg} onClick={this.props.onClickImg}>
+          <img
+            className={css.ImageGalleryItemImage}
+            loading="lazy"
+            src={this.props.img}
+            alt=""
+          />
+        </a>
       </li>
     );
   }

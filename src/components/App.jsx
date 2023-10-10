@@ -7,6 +7,7 @@ import { Loader } from './Loader/Loader';
 // import { Modal } from './Modal/Modal';
 import { SearchBar } from './Search-bar/SearchBar';
 import { fetchImg } from 'services/api';
+import { Modal } from './Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -15,6 +16,8 @@ export class App extends Component {
     page: 1,
     loadMore: false,
     isLoading: false,
+    modal: false,
+    urlBigImg: null,
     error: null,
   };
 
@@ -43,8 +46,7 @@ export class App extends Component {
       prevState.page !== this.state.page
     ) {
       this.fetchSearchImg();
-    }
-    if (prevState.search !== this.state.search) {
+    } else if (prevState.search !== this.state.search) {
       this.setState({ images: null });
     }
   }
@@ -55,14 +57,22 @@ export class App extends Component {
     });
   };
 
+  handleClickImg = e => {
+    e.preventDefault();
+    this.setState({ modal: true, urlBigImg: e.currentTarget.href });
+  };
+
   render() {
     return (
       <div className={css.App}>
         <SearchBar onSubmit={this.onSubmitForm} />
         {this.state.isLoading && <Loader />}
-        <ImageGallery images={this.state.images} />
+        <ImageGallery
+          images={this.state.images}
+          onClickImg={this.handleClickImg}
+        />
         {this.state.loadMore && <Button handleClick={this.handleClick} />}
-        {/* <Modal /> */}
+        {this.state.modal && <Modal urlImg={this.state.urlBigImg} />}
         {this.state.error && Notiflix.Notify.failure(this.state.error)}
       </div>
     );

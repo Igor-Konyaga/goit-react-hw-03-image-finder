@@ -4,7 +4,7 @@ export const Modal = () => {
   return (
     <div className={css.Overlay}>
       <div className={css.Modal}>
-        <img src="" alt="" />
+        <img src={this.props.urlImg} alt="" />
       </div>
     </div>
   );
