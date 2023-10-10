@@ -8,6 +8,7 @@ import { Loader } from './Loader/Loader';
 import { SearchBar } from './Search-bar/SearchBar';
 import { fetchImg } from 'services/api';
 import { Modal } from './Modal/Modal';
+import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 export class App extends Component {
   state = {
@@ -21,8 +22,25 @@ export class App extends Component {
     error: null,
   };
 
-  onSubmitForm = ({ searchValue }) => {
-    this.setState({ search: searchValue, isLoading: true, loadMore: false });
+  componentDidUpdate(_, prevState) {
+    if (
+      prevState.search !== this.state.search ||
+      prevState.page !== this.state.page
+    ) {
+      this.fetchSearchImg();
+    } else if (prevState.search !== this.state.search) {
+      this.setState({ images: null });
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKey);
+  }
+
+  handleKey = e => {
+    if (e.key === 'Escape') {
+      this.setState({ modal: false });
+    }
   };
 
   fetchSearchImg = async () => {
@@ -40,16 +58,10 @@ export class App extends Component {
       this.setState({ isLoading: false });
     }
   };
-  componentDidUpdate(_, prevState) {
-    if (
-      prevState.search !== this.state.search ||
-      prevState.page !== this.state.page
-    ) {
-      this.fetchSearchImg();
-    } else if (prevState.search !== this.state.search) {
-      this.setState({ images: null });
-    }
-  }
+
+  onSubmitForm = ({ searchValue }) => {
+    this.setState({ search: searchValue, isLoading: true, loadMore: false });
+  };
 
   handleClick = e => {
     this.setState(prevState => {
