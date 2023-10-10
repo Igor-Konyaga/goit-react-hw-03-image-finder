@@ -4,11 +4,9 @@ import css from './App.module.css';
 import { Button } from './Button/Button';
 import { ImageGallery } from './Image-gallery/ImageGallery';
 import { Loader } from './Loader/Loader';
-// import { Modal } from './Modal/Modal';
 import { SearchBar } from './Search-bar/SearchBar';
 import { fetchImg } from 'services/api';
 import { Modal } from './Modal/Modal';
-import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 export class App extends Component {
   state = {
@@ -22,34 +20,33 @@ export class App extends Component {
     error: null,
   };
 
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKey);
+  }
   componentDidUpdate(_, prevState) {
     if (
       prevState.search !== this.state.search ||
       prevState.page !== this.state.page
     ) {
       this.fetchSearchImg();
-    } else if (prevState.search !== this.state.search) {
-      this.setState({ images: null });
     }
   }
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKey);
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKey);
   }
-
-  handleKey = e => {
-    if (e.key === 'Escape') {
-      this.setState({ modal: false });
-    }
-  };
 
   fetchSearchImg = async () => {
     try {
-      const { hits } = await fetchImg(this.state.search, this.state.page);
+      const { hits, totalHits } = await fetchImg(
+        this.state.search,
+        this.state.page
+      );
+
       this.setState(prevState => {
         return {
           images: [...(prevState.images || []), ...hits],
-          loadMore: true,
+          loadMore: this.state.page < Math.ceil(totalHits / 12),
         };
       });
     } catch (error) {
@@ -59,8 +56,26 @@ export class App extends Component {
     }
   };
 
+  handleKey = e => {
+    if (e.key === 'Escape') {
+      this.setState({ modal: false });
+    }
+  };
+
   onSubmitForm = ({ searchValue }) => {
-    this.setState({ search: searchValue, isLoading: true, loadMore: false });
+    if (!searchValue) {
+      Notiflix.Notify.warning('Enter a search query!');
+      return;
+    } else if (searchValue === this.state.search) {
+		Notiflix.Notify.info('This search query is already displayed!');
+      return;
+    }
+    this.setState({
+      search: searchValue,
+      isLoading: true,
+      loadMore: false,
+      images: null,
+    });
   };
 
   handleClick = e => {
