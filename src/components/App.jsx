@@ -20,9 +20,6 @@ export class App extends Component {
     error: null,
   };
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKey);
-  }
   componentDidUpdate(_, prevState) {
     if (
       prevState.search !== this.state.search ||
@@ -32,16 +29,20 @@ export class App extends Component {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKey);
-  }
-
   fetchSearchImg = async () => {
     try {
       const { hits, totalHits } = await fetchImg(
         this.state.search,
         this.state.page
       );
+      if (totalHits === 0) {
+        Notiflix.Notify.info(`No results found for ${this.state.search}`);
+        return;
+      } else {
+        Notiflix.Notify.success(
+          `${totalHits} images were found for the '${this.state.search}' query`
+        );
+      }
 
       this.setState(prevState => {
         return {
@@ -70,11 +71,13 @@ export class App extends Component {
       Notiflix.Notify.info('This search query is already displayed!');
       return;
     }
+
     this.setState({
       search: searchValue,
       isLoading: true,
       loadMore: false,
       images: null,
+      page: 1,
     });
   };
 
@@ -90,7 +93,9 @@ export class App extends Component {
   };
 
   onCloseBtb = e => {
-    this.setState({ modal: false });
+    if (e.target === e.currentTarget) {
+      this.setState({ modal: false });
+    }
   };
 
   render() {
@@ -105,10 +110,7 @@ export class App extends Component {
         />
         {this.state.loadMore && <Button handleClick={this.handleClick} />}
         {this.state.modal && (
-          <Modal
-            urlImg={this.state.urlBigImg}
-            onCloseBtb={this.onCloseBtb}
-          />
+          <Modal urlImg={this.state.urlBigImg} onCloseBtb={this.onCloseBtb} />
         )}
         {this.state.error && Notiflix.Notify.failure(this.state.error)}
       </div>

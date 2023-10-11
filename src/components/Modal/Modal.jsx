@@ -1,12 +1,22 @@
+import { Component } from 'react';
 import css from './Modal.module.css';
 
-export const Modal = ({ urlImg, onCloseBtb }) => {
-  return (
-    <div className={css.Overlay}>
-      <div className={css.Modal}>
-        <img src={urlImg} alt="" />
-		  <button className={css.btn} type='button' onClick={onCloseBtb}>	<span>&times;</span></button>
+export class Modal extends Component {
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKey);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKey);
+  }
+
+  render() {
+    return (
+      <div className={css.Overlay} onClick={this.props.onCloseBtb}>
+        <div className={css.Modal}>
+          <img src={this.props.urlImg} alt="" />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
