@@ -110,7 +110,7 @@ export class App extends Component {
         />
         {this.state.loadMore && <Button handleClick={this.handleClick} />}
         {this.state.modal && (
-          <Modal urlImg={this.state.urlBigImg} onCloseBtb={this.onCloseBtb} />
+          <Modal urlImg={this.state.urlBigImg} onCloseBtb={this.onCloseBtb} onHandleKey={this.handleKey}/>
         )}
         {this.state.error && Notiflix.Notify.failure(this.state.error)}
       </div>

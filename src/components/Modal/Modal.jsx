@@ -3,13 +3,14 @@ import css from './Modal.module.css';
 
 export class Modal extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKey);
+    window.addEventListener('keydown', this.props.onHandleKey);
+
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKey);
+    window.removeEventListener('keydown', this.props.onHandleKey);
   }
-
+ 
   render() {
     return (
       <div className={css.Overlay} onClick={this.props.onCloseBtb}>
